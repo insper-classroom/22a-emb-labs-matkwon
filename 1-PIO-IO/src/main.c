@@ -23,6 +23,11 @@
 /* defines                                                              */
 /************************************************************************/
 
+#define LED0_PIO          PIOC
+#define LED0_PIO_ID       ID_PIOC
+#define LED0_PIO_IDX      8
+#define LED0_PIO_IDX_MASK (1 << LED0_PIO_IDX)
+
 #define LED1_PIO          PIOA
 #define LED1_PIO_ID       ID_PIOA
 #define LED1_PIO_IDX      0
@@ -37,6 +42,11 @@
 #define LED3_PIO_ID       ID_PIOB
 #define LED3_PIO_IDX      2
 #define LED3_PIO_IDX_MASK (1 << LED3_PIO_IDX)
+
+#define BUT0_PIO		  PIOA
+#define BUT0_PIO_ID		  ID_PIOA
+#define BUT0_PIO_IDX	  11
+#define BUT0_PIO_IDX_MASK (1u << BUT0_PIO_IDX)
 
 #define BUT1_PIO		  PIOD
 #define BUT1_PIO_ID		  ID_PIOD
@@ -88,24 +98,29 @@ void init(void) {
 	
 	// Ativa o PIO na qual o LED foi conectado
 	// para que possamos controlar o LED.
+	pmc_enable_periph_clk(LED0_PIO_ID);
 	pmc_enable_periph_clk(LED1_PIO_ID);
 	pmc_enable_periph_clk(LED2_PIO_ID);
 	pmc_enable_periph_clk(LED3_PIO_ID);
 	
 	//Inicializa PC8 como saída
+	pio_set_output(LED0_PIO, LED0_PIO_IDX_MASK, 0, 0, 0);
 	pio_set_output(LED1_PIO, LED1_PIO_IDX_MASK, 0, 0, 0);
 	pio_set_output(LED2_PIO, LED2_PIO_IDX_MASK, 0, 0, 0);
 	pio_set_output(LED3_PIO, LED3_PIO_IDX_MASK, 0, 0, 0);
 	
 	// Inicializa PIO do botao
+	pmc_enable_periph_clk(BUT0_PIO_ID);
 	pmc_enable_periph_clk(BUT1_PIO_ID);
 	pmc_enable_periph_clk(BUT2_PIO_ID);
 	pmc_enable_periph_clk(BUT3_PIO_ID);
 	
+	pio_set_input(LED0_PIO, BUT0_PIO_IDX_MASK, PIO_DEFAULT);
 	pio_set_input(LED1_PIO, BUT1_PIO_IDX_MASK, PIO_DEFAULT);
 	pio_set_input(LED2_PIO, BUT2_PIO_IDX_MASK, PIO_DEFAULT);
 	pio_set_input(LED3_PIO, BUT3_PIO_IDX_MASK, PIO_DEFAULT);
 	
+	pio_pull_up(LED0_PIO, BUT0_PIO_IDX_MASK, PIO_PULLUP);
 	pio_pull_up(LED1_PIO, BUT1_PIO_IDX_MASK, PIO_PULLUP);
 	pio_pull_up(LED2_PIO, BUT2_PIO_IDX_MASK, PIO_PULLUP);
 	pio_pull_up(LED3_PIO, BUT3_PIO_IDX_MASK, PIO_PULLUP);
@@ -126,7 +141,16 @@ int main(void) {
 	// aplicacoes embarcadas não devem sair do while(1).
 	while (1)
 	{
-		delay_ms(10);                        // Delay por software de 10 ms
+		if(!pio_get(BUT0_PIO, PIO_INPUT, BUT0_PIO_IDX_MASK)) {
+			for (int i = 0; i < 5; i++) {
+				pio_clear(LED0_PIO, LED0_PIO_IDX_MASK);
+				delay_ms(200);
+				pio_set(LED0_PIO, LED0_PIO_IDX_MASK);
+				delay_ms(200);
+			}
+		} else {
+			pio_set(LED0_PIO, LED0_PIO_IDX_MASK);
+		}
 		if(!pio_get(BUT1_PIO, PIO_INPUT, BUT1_PIO_IDX_MASK)) {
 			for (int i = 0; i < 5; i++) {
 				pio_clear(LED1_PIO, LED1_PIO_IDX_MASK);
