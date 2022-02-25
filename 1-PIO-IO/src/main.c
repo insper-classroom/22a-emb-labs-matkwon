@@ -63,6 +63,8 @@
 #define BUT3_PIO_IDX	  19
 #define BUT3_PIO_IDX_MASK (1u << BUT3_PIO_IDX)
 
+#define timeskip		  500
+
 
 /************************************************************************/
 /* constants                                                            */
@@ -144,9 +146,9 @@ int main(void) {
 		if(!pio_get(BUT0_PIO, PIO_INPUT, BUT0_PIO_IDX_MASK)) {
 			for (int i = 0; i < 5; i++) {
 				pio_clear(LED0_PIO, LED0_PIO_IDX_MASK);
-				delay_ms(200);
+				delay_ms(timeskip);
 				pio_set(LED0_PIO, LED0_PIO_IDX_MASK);
-				delay_ms(200);
+				delay_ms(timeskip);
 			}
 		} else {
 			pio_set(LED0_PIO, LED0_PIO_IDX_MASK);
@@ -154,9 +156,9 @@ int main(void) {
 		if(!pio_get(BUT1_PIO, PIO_INPUT, BUT1_PIO_IDX_MASK)) {
 			for (int i = 0; i < 5; i++) {
 				pio_clear(LED1_PIO, LED1_PIO_IDX_MASK);
-				delay_ms(200);
+				delay_ms(timeskip);
 				pio_set(LED1_PIO, LED1_PIO_IDX_MASK);
-				delay_ms(200);
+				delay_ms(timeskip);
 			}
 		} else {
 			pio_set(LED1_PIO, LED1_PIO_IDX_MASK);
@@ -164,9 +166,9 @@ int main(void) {
 		if(!pio_get(BUT2_PIO, PIO_INPUT, BUT2_PIO_IDX_MASK)) {
 			for (int i = 0; i < 5; i++) {
 				pio_clear(LED2_PIO, LED2_PIO_IDX_MASK);
-				delay_ms(200);
+				delay_ms(timeskip);
 				pio_set(LED2_PIO, LED2_PIO_IDX_MASK);
-				delay_ms(200);
+				delay_ms(timeskip);
 			}
 		} else {
 			pio_set(LED2_PIO, LED2_PIO_IDX_MASK);
@@ -174,9 +176,9 @@ int main(void) {
 		if(!pio_get(BUT3_PIO, PIO_INPUT, BUT3_PIO_IDX_MASK)) {
 			for (int i = 0; i < 5; i++) {
 				pio_clear(LED3_PIO, LED3_PIO_IDX_MASK);
-				delay_ms(200);
+				delay_ms(timeskip);
 				pio_set(LED3_PIO, LED3_PIO_IDX_MASK);
-				delay_ms(200);
+				delay_ms(timeskip);
 			}
 		} else {
 			pio_set(LED3_PIO, LED3_PIO_IDX_MASK);
