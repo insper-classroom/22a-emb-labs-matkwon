@@ -234,7 +234,7 @@ void io_init(void) {
 	pio_handler_set(BUT1_PIO,
 					BUT1_PIO_ID,
 					BUT1_IDX_MASK,
-					PIO_IT_RISE_EDGE,
+					PIO_IT_FALL_EDGE,
 					but1_callback);
 	
 	pio_enable_interrupt(BUT1_PIO, BUT1_IDX_MASK);
@@ -306,7 +306,8 @@ int main (void)
 			rtc_set_date_alarm(RTC, 1, current_month, 1, current_day);
 			rtc_set_time_alarm(RTC, 1, current_hour, 1, current_min, 1, current_sec + 20);
 			flag_but1 = 0;
-		} else if (flag_rtc_alarm) {
+		}
+		if (flag_rtc_alarm) {
 			RTC->RTC_IDR = 1 << 1; // desativar alarme do rtc
 			TC_init(TC1, ID_TC3, 0, 15);
 			tc_start(TC1, 0);
