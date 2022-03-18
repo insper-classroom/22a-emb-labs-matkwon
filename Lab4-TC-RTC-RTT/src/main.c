@@ -287,6 +287,7 @@ int main (void)
 	tc_start(TC0, 1);
 	RTT_init(4, 16, RTT_MR_ALMIEN);
 	calendar rtc_initial = {2022, 3, 17, 12, 11, 45, 1};
+	RTC_init(RTC, ID_RTC, rtc_initial, RTC_IER_SECEN);
 	RTC_init(RTC, ID_RTC, rtc_initial, RTC_IER_ALREN);
 	uint32_t current_hour, current_min, current_sec;
 	uint32_t current_year, current_month, current_day, current_week;
